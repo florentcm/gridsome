@@ -106,7 +106,9 @@ exports.processImage = async function ({
 exports.process = async function ({ queue, context, imagesConfig }) {
   await pMap(queue, async set => {
     try {
-      await exports.processImage({ ...set, imagesConfig })
+      await exports.processImage({ ...set, imagesConfig }).catch(err => {
+      console.error(err)
+    })
     } catch (err) {
       const relPath = path.relative(context, set.filePath)
       throw new Error(`Failed to process image ${relPath}. ${err.message}`)
